@@ -405,9 +405,9 @@ function doSubmit(id) {
   };
 
   const params = new URLSearchParams(payload);
-  const win = window.open(SHEET_URL + "?" + params.toString(), "_blank", "width=1,height=1");
-  setTimeout(() => {
-    if (win) win.close();
+  const img = new Image();
+img.src = SHEET_URL + "?" + params.toString() + "&t=" + Date.now();
+setTimeout(() => {
     STATE[id].submitted = true;
     btn.textContent = "已送出";
     btn.classList.add("submitted");
