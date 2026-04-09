@@ -395,8 +395,7 @@ function doSubmit(id) {
   const payload = {
     日期: date,
     班別: document.querySelector(`#card-${id} .badge:not(.badge-nosign)`)?.textContent || "",
-部門區域: {"fb-open":"餐飲部－開店","fb-close-am":"餐飲部－閉店（早班）","fb-close-pm":"餐飲部－閉店（午班）","ops-pkg":"營運部－包裝區閉店","ops-off":"營運部－辦公區閉店"}[id] || id,    部門區域: idLabel[id] || id,
-    執行者: ename,
+    部門區域: {"fb-open":"餐飲部－開店","fb-close-am":"餐飲部－閉店（早班）","fb-close-pm":"餐飲部－閉店（午班）","ops-pkg":"營運部－包裝區閉店","ops-off":"營運部－辦公區閉店"}[id] || id,
     簽核者: sname || "（無需簽核）",
     送出時間: timeStr,
     必做完成數: STATE[id].exec.filter((v, i) => v && req[i]).length,
