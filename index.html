@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日 SOP 確認表</title>
+<style>
+:root{--green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;--green-mid:#5DCAA5;--coral:#D85A30;--coral-light:#FAECE7;--coral-dark:#993C1D;--coral-mid:#F0997B;--purple:#7F77DD;--purple-light:#EEEDFE;--purple-dark:#534AB7;--blue-light:#E6F1FB;--blue-dark:#185FA5;--amber-light:#FAEEDA;--amber-dark:#854F0B;--text:#1a1a1a;--text-sec:#666;--text-ter:#999;--border:rgba(0,0,0,0.1);--border-med:rgba(0,0,0,0.15);--bg:#f7f6f3;--card-bg:#ffffff;--surface:#f0ede8;--radius:12px;--radius-sm:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.page-header{background:var(--card-bg);border-bottom:0.5px solid var(--border-med);padding:16px 20px;position:sticky;top:0;z-index:100;}
+.header-inner{max-width:720px;margin:0 auto;}
+.site-title{font-size:17px;font-weight:600;color:var(--text);}
+.site-sub{font-size:12px;color:var(--text-sec);margin-top:1px;}
+.date-bar{background:var(--card-bg);border-bottom:0.5px solid var(--border);padding:12px 20px;}
+.date-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.date-lbl{font-size:13px;font-weight:500;color:var(--text-sec);}
+.date-input{font-size:14px;font-weight:600;color:var(--text);border:0.5px solid var(--border-med);border-radius:var(--radius-sm);padding:6px 12px;background:var(--surface);outline:none;}
+.date-input:focus{border-color:var(--green);}
+.date-hint{font-size:12px;color:var(--text-ter);}
+.tab-bar{background:var(--card-bg);border-bottom:0.5px solid var(--border);padding:0 20px;}
+.tab-inner{max-width:720px;margin:0 auto;display:flex;}
+.tab-btn{padding:12px 20px;font-size:13px;font-weight:500;color:var(--text-sec);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
+.tab-btn.act-open{color:var(--green-dark);border-bottom-color:var(--green);}
+.tab-btn.act-close{color:var(--coral-dark);border-bottom-color:var(--coral);}
+.main{max-width:720px;margin:0 auto;padding:20px;}
+.panel{display:none;}
+.panel.active{display:block;}
+.sec-head{font-size:11px;font-weight:600;color:var(--text-ter);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;}
+.card{background:var(--card-bg);border:0.5px solid var(--border-med);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.card-head{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.card-dept{font-size:14px;font-weight:600;color:var(--text);}
+.card-sub{font-size:12px;color:var(--text-sec);margin-top:2px;}
+.card-badges{display:flex;align-items:center;gap:6px;}
+.badge{font-size:11px;font-weight:500;padding:2px 10px;border-radius:999px;}
+.badge-am{background:var(--blue-light);color:var(--blue-dark);}
+.badge-pm{background:var(--purple-light);color:var(--purple-dark);}
+.badge-eve{background:var(--amber-light);color:var(--amber-dark);}
+.badge-nosign{background:var(--surface);color:var(--text-ter);border:0.5px solid var(--border);}
+.prog{font-size:11px;font-weight:600;padding:2px 10px;border-radius:999px;}
+.prog-o{background:var(--green-light);color:var(--green-dark);}
+.prog-c{background:var(--coral-light);color:var(--coral-dark);}
+.col-head{display:grid;padding:5px 16px;background:var(--surface);border-bottom:0.5px solid var(--border);}
+.col-head.c2{grid-template-columns:1fr 80px;}
+.col-head.c3{grid-template-columns:1fr 80px 80px;}
+.col-lbl{font-size:11px;font-weight:500;color:var(--text-ter);text-align:center;}
+.col-lbl:first-child{text-align:left;}
+.grp-div{padding:6px 16px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;border-bottom:0.5px solid var(--border);}
+.grp-req{background:#f5fbf8;color:var(--green-dark);}
+.grp-rot{background:#f5f4fe;color:var(--purple-dark);}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot-g{background:var(--green);}
+.dot-p{background:var(--purple);}
+.sop-row{display:grid;padding:9px 16px;border-bottom:0.5px solid var(--border);align-items:center;}
+.sop-row.c2{grid-template-columns:1fr 80px;}
+.sop-row.c3{grid-template-columns:1fr 80px 80px;}
+.sop-row:last-child{border-bottom:none;}
+.sop-row:hover{background:var(--surface);}
+.task-wrap{display:flex;gap:8px;align-items:flex-start;}
+.task-num{font-size:11px;color:var(--text-ter);min-width:16px;padding-top:2px;flex-shrink:0;}
+.task-body{display:flex;flex-direction:column;gap:3px;}
+.task-txt{font-size:13px;color:var(--text);line-height:1.5;}
+.task-txt.done{text-decoration:line-through;color:var(--text-ter);}
+.rot-tag{font-size:10px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--purple-light);color:var(--purple-dark);align-self:flex-start;}
+.chk-cell{display:flex;align-items:center;justify-content:center;}
+input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:var(--green);}
+input[type=checkbox].sc{accent-color:var(--coral);}
+input[type=checkbox].rc{accent-color:var(--purple);}
+input[type=checkbox]:disabled{opacity:.25;cursor:not-allowed;}
+.note-bar{padding:8px 16px;font-size:12px;color:var(--coral-dark);background:var(--coral-light);border-top:0.5px solid var(--border);}
+.card-footer{padding:12px 16px;border-top:0.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.sig-pair{display:flex;align-items:center;gap:8px;}
+.sig-lbl{font-size:12px;color:var(--text-sec);white-space:nowrap;}
+.sig-name{font-size:13px;font-weight:600;border:0.5px solid var(--border-med);border-radius:var(--radius-sm);padding:5px 10px;width:80px;outline:none;color:var(--text);background:#fff;}
+.sig-name:focus{border-color:var(--green);}
+.submit-btn{padding:7px 16px;border-radius:var(--radius-sm);border:none;font-size:13px;font-weight:600;cursor:pointer;background:var(--coral);color:#fff;transition:all .15s;white-space:nowrap;}
+.submit-btn:hover{background:var(--coral-dark);}
+.submit-btn:disabled{background:var(--text-ter);cursor:not-allowed;}
+.submit-btn.submitted{background:var(--green);}
+.submit-meta{font-size:11px;color:var(--text-ter);}
+.done-banner{display:none;align-items:center;justify-content:center;gap:8px;padding:10px 16px;margin-top:6px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;}
+.done-o{background:var(--green-light);color:var(--green-dark);}
+.done-c{background:var(--coral-light);color:var(--coral-dark);}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:#fff;opacity:0;pointer-events:none;transition:opacity .3s;z-index:999;}
+.toast.show{opacity:1;}
+.toast.success{background:var(--green-dark);}
+.toast.error{background:var(--coral-dark);}
+</style>
+</head>
+<body>
+<div class="page-header">
+  <div class="header-inner">
+    <div class="site-title">知己知米私廚</div>
+    <div class="site-sub">每日 SOP 確認表</div>
+  </div>
+</div>
+<div class="date-bar">
+  <div class="date-inner">
+    <span class="date-lbl">日期</span>
+    <input type="date" class="date-input" id="sop-date">
+    <span class="date-hint">由第一位填表同仁確認日期</span>
+  </div>
+</div>
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn act-open" id="btn-open" onclick="sw('open')">開店 SOP</button>
+    <button class="tab-btn" id="btn-close" onclick="sw('close')">閉店 SOP</button>
+  </div>
+</div>
+<div class="main">
+  <div class="panel active" id="panel-open"></div>
+  <div class="panel" id="panel-close"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbyLorIlF36jUhvOS4aqxqfSntZml8PoTO7t-OCBn33h2BxI4X_TpPJqlLBRESlppLSY/exec";
+
+const ID_LABEL = {
+  "fb-open": "餐飲部－開店",
+  "fb-close-am": "餐飲部－閉店（早班）",
+  "fb-close-pm": "餐飲部－閉店（午班）",
+  "ops-pkg": "營運部－包裝區閉店",
+  "ops-off": "營運部－辦公區閉店"
+};
+
+const DATA = {
+  open: [
+    {dept:"餐飲部",sub:"早班同仁",shift:"早班",shiftCls:"badge-am",id:"fb-open",needSign:false,type:"open",
+     groups:[{label:null,required:true,items:[
+       "收門口廚餘桶和垃圾桶",
+       "開抽風機 ×2（鐵門①、辦公區②）",
+       "開電扇 ×5（壁扇①、壁扇②、廁所循環扇③、後陽台立扇④、包裝區立扇⑤）",
+       "開總瓦斯① 和 電力型蒸烤箱②",
+       "五分鐘後開各別瓦斯（炸鍋①、瓦斯型蒸烤箱②、洗碗機③、飯鍋④⑤⑥、炒區⑦）",
+       "開所有的燈（辦公室①②、走廊左③④、走廊右⑤、真空機⑥、保溫櫃⑦、烤箱區⑧、廁所⑨）",
+       "開抽油煙機",
+       "開洗碗機"
+     ]}]}
+  ],
+  close: [
+    {dept:"餐飲部",sub:"早班同仁",shift:"早班",shiftCls:"badge-am",id:"fb-close-am",needSign:true,type:"close",
+     note:"⚠️ 瓦斯關閉後請回頭複查總瓦斯開關",
+     groups:[{label:null,required:true,items:[
+       "廚餘＋垃圾拉到門口，拉下鐵門",
+       "關電扇 ×4（壁扇①、壁扇②、後陽台立扇③、包裝區立扇④）",
+       "關閉並檢查所有電源和瓦斯（炸鍋①、瓦斯型蒸烤箱②、洗碗機③、飯鍋④⑤⑥、電力型蒸烤箱⑦、炒區⑧）",
+       "關總瓦斯開關，關上後門兩道並上鎖",
+       "關抽油煙機",
+       "關燈（走廊左①②、走廊右③、真空機④、保溫櫃⑤、烤箱區⑥）",
+       "提醒大家檢查隔日訂單、庫存、叫貨確認",
+       "確認冷藏庫的燈有沒有關？電源是否正常運作？",
+       "確認所有冷凍櫃是否正常運作？",
+       "真空機關上？"
+     ]}]},
+    {dept:"餐飲部",sub:"午班同仁",shift:"午班",shiftCls:"badge-pm",id:"fb-close-pm",needSign:true,type:"close",
+     groups:[
+       {label:"每日必做",required:true,items:[
+         "洗碗區完成＋洗碗區刷洗",
+         "廁所清潔（洗手台①、馬桶②、地板③、牆面和天花板④、門面內外⑤）"
+       ]},
+       {label:"輪替工作（擇項勾選）",required:false,items:[
+         "主食區層架整潔（醬料區①、真空機區②、器材備品區③）",
+         "煮飯區層架整潔（儲藏盒區①、器皿用具區②、煮飯層架區③）",
+         "切菜區層架整潔（知己知米餐盒擺放區①、李鴻記餐盒擺放區②、上層架③）",
+         "烤箱區層架整潔（十盤烤箱下層架①、六盤烤箱下層架②、鐵盤器皿層架區③、開瓶醬料區＋檯面④）",
+         "炒檯（炒檯①、煎台②）"
+       ]}
+     ]},
+    {dept:"營運部",sub:"包裝區",shift:"午班",shiftCls:"badge-pm",id:"ops-pkg",needSign:true,type:"close",
+     groups:[{label:null,required:true,items:[
+       "國貿盒蓋貼紙各 2 條（100 個）",
+       "知己知米餐盒蓋貼紙 2 箱（800 個）",
+       "Mia Cbon 餐標貼紙每品項各 2 條（100 個）",
+       "擦拭包裝區檯面（POS①、冰箱檯面②、折疊白桌③）",
+       "擦拭保溫箱，關閉保溫箱電源",
+       "整理包裝區冰箱",
+       "掃拖包裝區＋辦公區＋走廊＋門口外草皮",
+       "擦拭門面白色的牆和隱藏門",
+       "盤點餐盒（知己知米塑膠餐盒①、李鴻記紙盒②、知己知米紙盒③）、耗材、清潔用品",
+       "提醒大家檢查隔日訂單、庫存、叫貨確認"
+     ]}]},
+    {dept:"營運部",sub:"辦公區",shift:"晚班",shiftCls:"badge-eve",id:"ops-off",needSign:true,type:"close",
+     groups:[{label:null,required:true,items:[
+       "關電扇、冷氣（天花板循環扇①、鐵櫃上循環扇②）",
+       "關抽風機（鐵門①、辦公區②）",
+       "關燈（辦公室①、辦公室②、廁所③）＋廁所不關門"
+     ]}]}
+  ]
+};
+
+const STATE = {};
+
+function today(){const d=new Date();return d.toISOString().slice(0,10);}
+document.getElementById("sop-date").value = today();
+
+function flatRows(cfg){
+  const rows=[];
+  cfg.groups.forEach(g=>g.items.forEach(item=>rows.push({text:item,required:g.required})));
+  return rows;
+}
+
+function buildCard(cfg){
+  const rows=flatRows(cfg);
+  const n=rows.length;
+  const reqN=rows.filter(r=>r.required).length;
+  const ns=cfg.needSign;
+  const isOpen=cfg.type==="open";
+  STATE[cfg.id]={exec:Array(n).fill(false),sign:ns?Array(n).fill(false):null,required:rows.map(r=>r.required),signed:false,submitted:false};
+  const cols=ns?"c3":"c2";
+  const colHead=`<div class="col-head ${cols}"><span class="col-lbl">工作項目</span><span class="col-lbl">執行者確認</span>${ns?'<span class="col-lbl">簽核者確認</span>':''}</div>`;
+  let rowsHtml="";
+  let gi=0;
+  cfg.groups.forEach(g=>{
+    if(g.label){
+      const isRot=!g.required;
+      rowsHtml+=`<div class="grp-div ${isRot?'grp-rot':'grp-req'}"><span class="dot ${isRot?'dot-p':'dot-g'}"></span>${g.label}</div>`;
+    }
+    g.items.forEach(item=>{
+      const i=gi++;
+      const isRot=!g.required;
+      const signCol=ns?`<div class="chk-cell"><input type="checkbox" class="sc" id="sign-${cfg.id}-${i}" disabled onchange="toggle('${cfg.id}',${i},'sign')"></div>`:"";
+      const execCls=isRot?" rc":"";
+      rowsHtml+=`<div class="sop-row ${cols}">
+        <div class="task-wrap"><span class="task-num">${i+1}.</span>
+          <div class="task-body"><span class="task-txt" id="txt-${cfg.id}-${i}">${item}</span>${isRot?'<span class="rot-tag">輪替</span>':''}</div>
+        </div>
+        <div class="chk-cell"><input type="checkbox" class="${execCls.trim()}" id="exec-${cfg.id}-${i}" onchange="toggle('${cfg.id}',${i},'exec')"></div>
+        ${signCol}
+      </div>`;
+    });
+  });
+  const noteHtml=cfg.note?`<div class="note-bar">${cfg.note}</div>`:"";
+  const footerHtml=ns?`<div class="card-footer">
+    <div class="sig-pair"><span class="sig-lbl">執行者</span><input class="sig-name" type="text" placeholder="姓名" id="ename-${cfg.id}"></div>
+    <div class="sig-pair"><span class="sig-lbl">簽核者</span><input class="sig-name" type="text" placeholder="姓名" id="sname-${cfg.id}">
+    <button class="submit-btn" id="sbtn-${cfg.id}" onclick="doSubmit('${cfg.id}')">簽核並送出</button>
+    <span class="submit-meta" id="smeta-${cfg.id}"></span></div>
+  </div>`:`<div class="card-footer">
+    <div class="sig-pair"><span class="sig-lbl">執行者</span><input class="sig-name" type="text" placeholder="姓名" id="ename-${cfg.id}"></div>
+    <button class="submit-btn" id="sbtn-${cfg.id}" onclick="doSubmit('${cfg.id}')">完成並送出</button>
+    <span class="submit-meta" id="smeta-${cfg.id}"></span>
+  </div>`;
+  const bannerCls=isOpen?"done-o":"done-c";
+  return `<div class="card" id="card-${cfg.id}">
+    <div class="card-head">
+      <div><div class="card-dept">${cfg.dept}</div><div class="card-sub">${cfg.sub}</div></div>
+      <div class="card-badges">
+        <span class="badge ${cfg.shiftCls}">${cfg.shift}</span>
+        ${!ns?'<span class="badge badge-nosign">僅執行確認</span>':""}
+        <span class="prog ${isOpen?'prog-o':'prog-c'}" id="prog-${cfg.id}">0 / ${reqN}</span>
+      </div>
+    </div>
+    ${colHead}<div>${rowsHtml}</div>${noteHtml}${footerHtml}
+  </div>
+  <div class="done-banner ${bannerCls}" id="banner-${cfg.id}">✓ ${cfg.dept}（${cfg.sub}）已完成並送出</div>`;
+}
+
+function toggle(id,i,role){
+  const cb=document.getElementById(`${role}-${id}-${i}`);
+  STATE[id][role][i]=cb.checked;
+  if(role==="exec"){
+    const sc=document.getElementById(`sign-${id}-${i}`);
+    if(sc){sc.disabled=!cb.checked;if(!cb.checked){sc.checked=false;if(STATE[id].sign)STATE[id].sign[i]=false;}}
+    const t=document.getElementById(`txt-${id}-${i}`);
+    cb.checked?t.classList.add("done"):t.classList.remove("done");
+  }
+  const req=STATE[id].required;
+  const done=STATE[id].exec.filter((v,i2)=>v&&req[i2]).length;
+  const total=req.filter(Boolean).length;
+  document.getElementById(`prog-${id}`).textContent=`${done} / ${total}`;
+}
+
+function doSubmit(id){
+  if(STATE[id].submitted)return;
+  const date=document.getElementById("sop-date").value;
+  if(!date){showToast("請先填寫日期","error");return;}
+  const ename=document.getElementById(`ename-${id}`).value.trim();
+  if(!ename){showToast("請填寫執行者姓名","error");return;}
+  const ns=STATE[id].sign!==null;
+  const req=STATE[id].required;
+  if(!STATE[id].exec.every((v,i)=>!req[i]||v)){showToast("必做項目尚未全部完成","error");return;}
+  let sname="";
+  if(ns){sname=document.getElementById(`sname-${id}`).value.trim();if(!sname){showToast("請填寫簽核者姓名","error");return;}}
+  const btn=document.getElementById(`sbtn-${id}`);
+  btn.disabled=true;btn.textContent="送出中...";
+  const rows=flatRows([...DATA.open,...DATA.close].find(c=>c.id===id));
+  const checkedItems=STATE[id].exec.map((v,i)=>v?rows[i].text:null).filter(Boolean);
+  const rotChecked=STATE[id].exec.map((v,i)=>(v&&!req[i])?rows[i].text:null).filter(Boolean);
+  const now=new Date();
+  const timeStr=`${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+  const payload={
+    日期:date,班別:document.querySelector(`#card-${id} .badge:not(.badge-nosign)`)?.textContent||"",
+    部門區域:ID_LABEL[id]||id,執行者:ename,簽核者:sname||"（無需簽核）",送出時間:timeStr,
+    必做完成數:STATE[id].exec.filter((v,i)=>v&&req[i]).length,必做總數:req.filter(Boolean).length,
+    輪替完成項目:rotChecked.join("、")||"無",完成項目清單:checkedItems.join("、")
+  };
+  const params=new URLSearchParams(payload);
+  const img=new Image();
+  img.src=SHEET_URL+"?"+params.toString()+"&t="+Date.now();
+  setTimeout(()=>{
+    STATE[id].submitted=true;
+    btn.textContent="已送出";btn.classList.add("submitted");
+    document.getElementById(`smeta-${id}`).textContent=`${sname||ename} · ${timeStr}`;
+    document.getElementById(`banner-${id}`).style.display="flex";
+    showToast("資料已成功送出 ✓","success");
+    document.getElementById(`card-${id}`).querySelectorAll("input,button").forEach(el=>el.disabled=true);
+  },2500);
+}
+
+function showToast(msg,type){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.className=`toast ${type} show`;
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),3000);
+}
+
+function sw(tab){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById(`panel-${tab}`).classList.add("active");
+  document.getElementById("btn-open").className="tab-btn"+(tab==="open"?" act-open":"");
+  document.getElementById("btn-close").className="tab-btn"+(tab==="close"?" act-close":"");
+}
+
+function renderPanel(tab){
+  const panel=document.getElementById(`panel-${tab}`);
+  let html=`<div class="sec-head" style="margin-top:4px;">${tab==="open"?"開店":"閉店"} SOP</div>`;
+  DATA[tab].forEach(cfg=>{html+=buildCard(cfg);});
+  panel.innerHTML=html;
+}
+
+renderPanel("open");
+renderPanel("close");
+</script>
+</body>
+</html>
